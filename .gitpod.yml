@@ -11,3 +11,4 @@ tasks:
 vscode:
   extensions:
     - 42Crunch.vscode-openapi
+  # when gitpod is open this will run automatically
