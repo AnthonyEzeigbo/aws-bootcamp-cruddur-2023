@@ -34,9 +34,11 @@ Vscode IDE on browser, i typed in all the linux command and downloaded the zip f
 
 ### NAPKIN DIAGRAM
 
-![]()
+![Napkin architectural diadram](asset/napkin%20diagram.jpeg)
 
 ### PHYSICAL DIAGRAM
 
-![]()
+![CRUDDUR Logical Architectural Design](asset/physical%20diagram%20snip.PNG)
+
+[Link to the diagram](https://lucid.app/lucidchart/c833603e-14b9-4b45-8e31-42c22ebc0ab1/edit?viewport_loc=2%2C63%2C3072%2C1512%2C0_0&invitationId=inv_18f9e114-800d-4cfc-bb71-ac5cb3efeb09)
 
