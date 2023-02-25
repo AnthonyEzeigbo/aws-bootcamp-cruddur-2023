@@ -16,13 +16,14 @@ import {
 } from "react-router-dom";
 
 const router = createBrowserRouter([
-  {
-    path: "/homefeedpage",
+  { 
+    path: "/Homefeedpage",
     element: <HomeFeedPage />
-
-
-    path: "/notifications",
+  },
+  {
+    path: "/notification",
     element: <NotificationFeedPage />
+  
   },
   {
     path: "/@:handle",
