@@ -21,4 +21,4 @@ tasks:
 vscode:
   extensions:
     - 42Crunch.vscode-openapi
-    - cweijan.vscode-postgresql-client2# when gitpod is open this will run automatically
+    - cweijan.vscode-postgresql-client2 
