@@ -20,6 +20,22 @@ then i push the Docker image to Docker Hub using the command ```docker push dock
 
 ![Dockerhub](assets%20week1/dockerhub%20image.PNG)
 
+# Implement a healthcheck in the V3 Docker compose file
+
+This configuration adds a healthcheck to the your_service service. The test parameter specifies the command to run to check the health of the container. In this example, the healthcheck uses curl to request the /healthcheck endpoint on localhost:0000. If the command exits with a non-zero status code, the container is considered unhealthy.
+
+```version: '3'
+services:
+  your_service:
+    image: your_image
+    ports:
+      - "0000:0000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:0000/healthcheck"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+ ```
 
 # Using multi-stage building for a Dockerfile build
 multi-stage build is used for creating lightweight images that a secure by separating the build process from run time enviroment
@@ -47,6 +63,24 @@ ENV FLASK_ENV=development
 EXPOSE ${PORT}
 
 # This will run our backend via flask module of python
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=4567"]```
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=4567"]
+```
+
+#  best practices of Dockerfiles 
+
+1. Use official base images from Docker Hub whenever possible. These images are maintained by the Docker community and are more secure and reliable.
+
+2. Minimize the number of layers in your Dockerfile. Each layer adds overhead to the build process and increases the size of the final image.
+
+3. Use the COPY command instead of ADD whenever possible. COPY is more predictable and doesn't have the extra functionality of ADD.
+
+4. Use multi-stage builds to reduce the size of the final image. This allows you to build your application in one image and then copy only the necessary files into a smaller image.
+
+5. Use environment variables to pass configuration options to your container. This makes your container more flexible and easier to configure.
+
+6. Use specific versions for all dependencies to ensure reproducibility. This helps avoid issues with incompatible versions in the future.
+
+7. Avoid running commands as root in your Dockerfile. Instead, use the USER command to specify a non-root user to run the container.
+
 
 
