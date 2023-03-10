@@ -14,7 +14,8 @@
 			"extensions": [
 				"ms-azuretools.vscode-docker",
 				"tht13.python",
-				"ms-python.python"
+				"ms-python.python",
+				"dracula-theme.theme-dracula"
 			]
 		}
 	}
