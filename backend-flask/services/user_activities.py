@@ -1,12 +1,23 @@
 from datetime import datetime, timedelta, timezone
+from aws_xray_sdk.core import xray_recorder
 class UserActivities:
   def run(user_handle):
+    subsegment = xray_recorder.begin_segment('mock-data1')
+
     model = {
       'errors': None,
       'data': None
     }
 
     now = datetime.now(timezone.utc).astimezone()
+
+    # x-ray
+    dict = {
+      "now": now.isoformat(),
+      "results-size": len(model['data'])
+    }
+    subsegment.put_metadata('key', dict, 'namespace')
+    xray_recorder.end_subsegment()
 
     if user_handle == None or len(user_handle) < 1:
       model['errors'] = ['blank_user_handle']
