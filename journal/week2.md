@@ -188,4 +188,171 @@ With our previously hard-coded attributes `app.now` and `app.result_length`, let
 
 
 
+
+
+
 ![](assets%20week2/Honeycomb/Honeycomb%20maps.PNG)
+
+
+
+
+
+
+
+
+
+5.**Instrument AWS X-ray into the backend**
+
+AWS X-ray makes it easy for dev's to analyze the behavior of the distributed  applications by providing request, tracing, exception collection and profiling capabilities, it provides a complete view of requests as they travel through your application and filters visual data across payloads, with low-code or no-code motions.
+
+
+  **How to install X-ray**
+
+for x-ray the first thing we have to do is to install the [AWS SDK](https://aws.amazon.com/sdk-for-javascript/)
+go to the cruddur folder open up the backend-flask file, open up the `requirment.txt` file and add the `aws-xray-sdk` to the file
+Add the following lines to the `requirements.txt` file located in the `backend-flask/` directory
+
+
+
+
+![](assets%20week2/aws-xray/x-ray/aws-sdk%20-%20Copy.PNG)
+
+```
+aws-xray-sdk
+```
+
+Go to the terminal and install the dependencies you listed in the `requirements.txt file In the `backend-flask` directory, run the following command:
+```
+pip install -r requirements.txt
+```
+
+
+**Instrument X-ray for flask**
+Attached the AWS-sdk source code  to your `app.py`
+To instrument our backend, add the following lines of code to the `backend-flask/app.py`
+
+```
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+
+xray_url = os.getenv("AWS_XRAY_URL")
+xray_recorder.configure(service='backend-flask', dynamic_naming=xray_url)
+
+XRayMiddleware(app, xray_recorder)
+```
+
+
+![](assets%20week2/aws-xray/x-ray/x-ray%20for%20flask.PNG)
+
+
+**create sample**
+
+Create a `json` file in the `aws/json` directory
+
+```
+touch aws/json/xray.json
+```
+
+Add the following lines of code to your newly created file:
+
+
+```
+{
+  "SamplingRule": {
+      "RuleName": "Cruddur",
+      "ResourceARN": "*",
+      "Priority": 9000,
+      "FixedRate": 0.1,
+      "ReservoirSize": 5,
+      "ServiceName": "backend-flask",
+      "ServiceType": "*",
+      "Host": "*",
+      "HTTPMethod": "*",
+      "URLPath": "*",
+      "Version": 1
+  }
+}
+```
+
+Let's create an x-ray trace group and a sampling rule. Go ahead and run the following command:
+
+```
+# create a trace group in AWS x-ray
+aws xray create-group \
+   --group-name "Cruddur" \
+   --filter-expression "service(\"backend-flask\")"
+
+# create a sampling rule
+aws xray create-sampling-rule --cli-input-json file://aws/json/xray.json
+```
+
+Configure X-ray daemon with docker-compose
+
+Setup the daemon in the `docker-compose.yml` file by adding these following lines:
+
+```
+# add these env variables above in the ENV section
+AWS_XRAY_URL: "*4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}*"
+AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
+
+xray-daemon:
+    image: "amazon/aws-xray-daemon"
+    environment:
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_REGION: "us-east-1"
+    command:
+      - "xray -o -b xray-daemon:2000"
+    ports:
+      - 2000:2000/udp
+ ```
+      
+      
+  After the updates, test out your configuration by running this command:  `docker compose up`
+  
+  Check your x-ray container logs to make sure logs were successfully sent to AWS X-ray.
+  
+  
+  ![x-ray trace](assets%20week2/aws-xray/x-ray/x-ray%20traces.PNG)
+  
+  
+  
+  
+  
+6. **Create a custom segment and subsegment with AWS X-ray**
+
+In the `backend-flask/services/user_activities.py` file, add the following contents:
+
+```
+from aws_xray_sdk.core import xray_recorder
+
+# Add in the def run(user_handle): section, 
+# but below, before the return statement
+# Start a segment
+	subsegment = xray_recorder.begin_segment('mock-data')
+
+    dict = {
+      "now": now.isoformat(),
+      "results-size": len(model['data'])
+    }
+
+    subsegment.put_metadata('key', dict, 'namespace')
+
+    # Close subsegment
+    xray_recorder.end_subsegment()
+ ```
+ 
+ 
+ 7. **Install WatchTower & write custom logger to send app log data to CloudWatch Log Group**
+
+
+
+
+
+
+  
+      
+
+
+
+
