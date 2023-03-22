@@ -426,3 +426,8 @@ def data_home():
 
 
 Then run `docker compose up` to verify and test your confuguration
+
+
+
+
+![cloudwatch log](assets%20week2/aws-xray/x-ray/cloudwatch%20log%20group.PNG)
