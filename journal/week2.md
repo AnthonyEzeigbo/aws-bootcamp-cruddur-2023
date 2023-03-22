@@ -346,13 +346,83 @@ from aws_xray_sdk.core import xray_recorder
  7. **Install WatchTower & write custom logger to send app log data to CloudWatch Log Group**
 
 
+Add the following lines to the `requirements.txt` file located in the `backend-flask/` directory
+
+```
+watchtower
+```
+
+Now install the dependencies you listed in the `requirements.txt` file In the `backend-flask` directory, run the following command:
 
 
+```
+pip install -r requirements.txt
+```
+
+**Set environment variables for watchtower**
+
+In the `docker-compose.yml` file, add the following lines:
+
+```
+AWS_DEFAULT_REGION: "${AWS_DEFAULT_REGION}"
+AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+```
+
+Now let's configure our CloudWatch logger. Add the following lines to the `app.py` file:
 
 
-  
+we first of all setup a log_group called `cruddur` in the `app.py` file, after every single request if we want to login an error
+we have to use the code below, to do error logging.
+```
+# CloudWatch Logs
+import watchtower
+import logging
+from time import strftime
+
+# Configuring Logger to Use CloudWatch
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
+LOGGER.addHandler(console_handler)
+LOGGER.addHandler(cw_handler)
+LOGGER.info("test message")
+```
+
+
+At the section where you see `@app.route`  you have to paste the code below in there it:  
+
+```
+@app.after_request
+def after_request(response):
+    timestamp = strftime('[%Y-%b-%d %H:%M]')
+    LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
+    return response
+```
       
 
 
+Now let's log something in one of the API endpoint by adding the following lines to our `backend-flask/services/home_activities.py` file:
 
 
+```
+# in the class HomeActivities: section, update and add these lines
+def run(logger):
+    logger.info("HomeActivities")
+```
+
+In the `app.py` file, update this section of your code to look like this:
+
+
+```
+@app.route("/api/activities/home", methods=['GET'])
+def data_home():
+  data = HomeActivities.run(logger=LOGGER)
+  return data, 200
+```
+
+
+
+
+Then run `docker compose up` to verify and test your confuguration
