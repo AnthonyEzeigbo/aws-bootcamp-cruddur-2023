@@ -446,8 +446,9 @@ rollbar
 
 install the dependencies you listed in the `requirements.txt` file In the `backend-flask` directory, run the following command:
 
-``
+```
 pip install -r requirements.txt
+
 ```
 
 
@@ -456,6 +457,7 @@ add the rollbar access token
 ```
 export ROLLBAR_ACCESS_TOKEN=""
 gp env ROLLBAR_ACCESS_TOKEN=""
+
 ```
 
 
