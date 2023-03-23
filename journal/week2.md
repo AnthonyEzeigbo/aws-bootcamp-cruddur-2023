@@ -431,3 +431,31 @@ Then run `docker compose up` to verify and test your confuguration
 
 
 ![cloudwatch log](assets%20week2/aws-xray/x-ray/cloudwatch%20log%20group.PNG)
+
+
+8. **Integrate Rollbar for Error Logging**
+
+Rollbar is a cloud-based bug tracking and monitoring solution that caters to organizations of all sizes.
+
+Add the following lines to the `requirements.txt` file located in the `backend-flask/` directory
+
+```
+blinker 
+rollbar
+```
+
+install the dependencies you listed in the `requirements.txt` file In the `backend-flask` directory, run the following command:
+
+``
+pip install -r requirements.txt
+```
+
+
+add the rollbar access token
+
+```
+export ROLLBAR_ACCESS_TOKEN=""
+gp env ROLLBAR_ACCESS_TOKEN=""
+```
+
+
