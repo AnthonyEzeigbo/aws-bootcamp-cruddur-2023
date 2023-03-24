@@ -28,7 +28,7 @@ class UserActivities:
       model['data'] = results
 
      # x-ray
-    subsegment = xray_recorder.begin_segment('mock-data1')
+    subsegment = xray_recorder.begin_segment('mock-data')
 
     dict = {
       "now": now.isoformat(),
