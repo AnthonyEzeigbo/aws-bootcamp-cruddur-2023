@@ -460,4 +460,74 @@ gp env ROLLBAR_ACCESS_TOKEN=""
 
 ```
 
+This is how you  retrieve your access token from rollbar :
+once your logged in to rollbar you have to add flask to your rollbar from the rollbar app store, once flask is added to your rollbar than click on it to see all it credentials 
 
+
+
+![Rollbar](assets%20week2/aws-xray/ROLLBAR.PNG)
+
+
+You will have to add access token to your `docker compose.yml file`
+
+```
+# In the  environment variables area
+ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"
+```
+
+**Import Rollbar libraries**
+
+
+You will need to  import the rollbar libraries from python and then the following lines have to be added in the `app.py` file.
+
+```
+# Rollbar
+import rollbar
+import rollbar.contrib.flask
+from flask import got_request_exception
+
+# after app = Flask(__name__), to avoid errors
+# add these lines 
+rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
+@app.before_first_request
+def init_rollbar():
+    """init rollbar module"""
+    rollbar.init(
+        # access token
+        rollbar_access_token,
+        # environment name
+        'production',
+        # server root directory, makes tracebacks prettier
+        root=os.path.dirname(os.path.realpath(__file__)),
+        # flask already sets up logging
+        allow_logging_basic_config=False)
+
+    # send exceptions from `app` to rollbar, using flask's signal system.
+    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+```
+
+**Add Rollbar Endpoint**
+
+You will have to copy the rollbar endpoint code from you flask dependecy see image above for the dependecy,add it to your `@app.route` that is located inside your `app.py` file
+
+```
+@app.route('/rollbar/test')
+def rollbar_test():
+    rollbar.report_message('Hello World!', 'warning')
+    return "Hello World!"
+```
+
+once the above is implemented you will have to go back to your `docker compose.yml` file right click to do `docker compose up`
+go to the backend ports click on it once it opens up, in the url do  api/activities/home to trigger event in the backend.
+
+Afterward, test out the new endpoint you added by appending /rollbar/test to your backend URL, example `https://4567-anthonyezei-awsbootcamp-cvg7kh2xl0a.ws-us92.gitpod.io/rollbar/test`
+
+
+**ROLLBAR EVENT**
+Once an error has been triggered you rollbar event will be listenning to recieve it, once recieved it will log all event in rollbar items in the rollbar homepage
+
+
+An error message like this should pop up.
+
+
+![rollbar event log](assets%20week2/aws-xray/rollbar%20event%20log.PNG)
