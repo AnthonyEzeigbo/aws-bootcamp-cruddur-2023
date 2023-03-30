@@ -83,7 +83,44 @@ The following steps are applied
 
 **Step NO 3:**
 
-In the Self-service sign-up section, make sure you check the box that says  `Enable self-registration`.
+. In the <ins>Self-service sign-up section</ins>, make sure you check the box that says  `Enable self-registration`.
 
 ![](assets%20week3/Amazon%20cognito/amazon%20cognito%206.PNG)
+
+
+
+. Assuming we,ve been following the steps,the next thing will be the  `Attribute verification and user account confirmation section`. leave the default selections as is. 
+
+
+
+
+![](assets%20week3/Amazon%20cognito/amazon%20cognito%206.PNG)
+
+
+In the <ins>Required attributes section</ins>, add additional required attributes that yoy would like your app to have for this app, we will be adding - name as one of the attributes
+
+
+
+
+**Step NO 4:**
+
+
+In the <ins>Email provider section</ins>,  select to Send email with Cognito only, and allow the default selection as is in  the option.to continue click next.
+
+
+
+![](assets%20week3/Amazon%20cognito/amazon%20cognito%207.PNG)
+
+
+
+**Step NO 5:**
+
+
+. The <ins>User pool name section</ins>, will need to have a name and make sure the names are not generic, create a freindly user pool name.
+
+Once you chose that name and it has been created the name cant be rechanged once created but the attrinutes can change.
+
+
+![](assets%20week3/Amazon%20cognito/amazon%20cognito%208.PNG)
+
 
