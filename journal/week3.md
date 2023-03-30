@@ -121,6 +121,26 @@ In the <ins>Email provider section</ins>,  select to Send email with Cognito onl
 Once you chose that name and it has been created the name cant be rechanged once created but the attrinutes can change.
 
 
+. In the <ins>Hosted authentication pages</ins> section, DON'T check the box that says Use the `Cognito Hosted UI`. for this project it wont be needed.
+
+. In the Initial app client section, select `Public client` as our App type.
+
+. For the App client name; enter cruddur since the name of our app is cruddur. After that, leave the rest of the default selections and click Next
+
+
 ![](assets%20week3/Amazon%20cognito/amazon%20cognito%208.PNG)
 
 
+
+**Step NO 6:**
+
+. This section, is where you get to  review all our configurations and then go ahead to Create user pool. After creation, you should receive a success message.
+
+![](assets%20week3/Amazon%20cognito/amazon%20cognito%209.PNG)
+
+
+
+
+
+
+![](assets%20week3/Amazon%20cognito/amazon%20cognito%2010.PNG)
