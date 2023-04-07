@@ -144,3 +144,30 @@ Once you chose that name and it has been created the name cant be rechanged once
 
 
 ![](assets%20week3/Amazon%20cognito/amazon%20cognito%2010.PNG)
+
+
+
+
+2. ### Configure Amazon Amplify
+
+***What is <ins>Amazon Amplify</ins>***
+
+
+Amazon Amplify is a complete solution that lets frontend web developers and mobile developers to easily build, ship, and host full-stack applications on AWS, with the flexibility to leverage the breadth of AWS services as use cases evolve, It is a full-stack application platform that is a combination of both client-side and server-side code, if you want to learn more about Amazon Amplify here is a [LINK](https://aws.amazon.com/amplify/#:~:text=AWS%20Amplify%20is%20a%20complete,Build%20a%20frontend%20UI).
+
+
+How configure our Amazon Amplify.
+
+
+**Step 1:**
+Dont forget that development environment is still `gitpod`, while your in your Dev environment In your Terminal, `cd` into the `frontend-react-js` directory, and run this command:
+
+```
+# navigate to frontend-react-js
+cd frontend-react-js
+
+# add aws-amplify library
+npm i aws-amplify --save
+# the --save flag saves the library to your package.json file 
+```
+
