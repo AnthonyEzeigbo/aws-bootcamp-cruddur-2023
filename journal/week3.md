@@ -207,4 +207,51 @@ REACT_APP_AWS_USER_POOLS_ID: "${REACT_APP_AWS_USER_POOLS_ID}"
 REACT_APP_CLIENT_ID: "${REACT_APP_CLIENT_ID}"
 ```
 **You will have to locate your `user pool  ID`, because it will have to be inserted in the `REACT_APP_CLIENT_ID` section of the code above.
-**The user pool name will be found in your `Amazon cognito` in the AWS console, click into the pool you created and look for the `App integration tab` as shown in the image below. Then scroll all the way down to view your `client ID`
+**The user pool name will be found in your `Amazon cognito` in the AWS console, click into the pool you created and look for the `App integration tab` as shown in the image below. Then scroll all the way down to view your `client ID`**
+
+![Amazon Cognito Dash Board](assets%20week3/amazon%20cognito%2012.PNG)
+
+
+The follwoing lines of code as to be added in the `frontend-react-js/src/pages/HomeFeedPage.js` file.
+
+
+```
+// AWS Amplify
+import { Auth } from 'aws-amplify';
+
+// DELETE THESE LINES
+const checkAuth = async () => {
+    console.log('checkAuth')
+    // [TODO] Authenication
+    if (Cookies.get('user.logged_in')) {
+      setUser({
+        display_name: Cookies.get('user.name'),
+        handle: Cookies.get('user.username')
+      })
+    }
+  };
+
+
+// ADD THESE LINES 
+// check if we are authenticated
+const checkAuth = async () => {
+  Auth.currentAuthenticatedUser({
+    // Optional, By default is false. 
+    // If set to true, this call will send a 
+    // request to Cognito to get the latest user data
+    bypassCache: false 
+  })
+  .then((user) => {
+    console.log('user',user);
+    return Auth.currentAuthenticatedUser()
+  }).then((cognito_user) => {
+      setUser({
+        display_name: cognito_user.attributes.name,
+        handle: cognito_user.attributes.preferred_username
+      })
+  })
+  .catch((err) => console.log(err));
+};
+```
+
+
