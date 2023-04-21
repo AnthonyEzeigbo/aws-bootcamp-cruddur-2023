@@ -194,3 +194,17 @@ Amplify.configure({
   }
 });
 ```
+
+**Step 2:**
+
+ We will now have to set our environment variables from the code mentioned above. Go into your `docker-compose.yml` file, and under the `frontend-react-js` service, by add the following lines of code below:
+
+```
+# AWS Amplify
+REACT_APP_AWS_PROJECT_REGION: "${AWS_DEFAULT_REGION}"
+REACT_APP_AWS_COGNITO_REGION: "${AWS_DEFAULT_REGION}"
+REACT_APP_AWS_USER_POOLS_ID: "${REACT_APP_AWS_USER_POOLS_ID}"
+REACT_APP_CLIENT_ID: "${REACT_APP_CLIENT_ID}"
+```
+**You will have to locate your `user pool  ID`, because it will have to be inserted in the `REACT_APP_CLIENT_ID` section of the code above.
+**The user pool name will be found in your `Amazon cognito` in the AWS console, click into the pool you created and look for the `App integration tab` as shown in the image below. Then scroll all the way down to view your `client ID`
