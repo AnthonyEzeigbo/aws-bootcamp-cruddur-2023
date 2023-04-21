@@ -211,6 +211,8 @@ REACT_APP_CLIENT_ID: "${REACT_APP_CLIENT_ID}"
 
 ![Amazon Cognito Dash Board](assets%20week3/amazon%20cognito%2012.PNG)
 
+**Step 3:**
+
 
 The follwoing lines of code as to be added in the `frontend-react-js/src/pages/HomeFeedPage.js` file.
 
@@ -254,4 +256,38 @@ const checkAuth = async () => {
 };
 ```
 
+**Step 4:**
 
+Using the following line of codes update the `frontend-react-js/src/components/ProfileInfo.js` file
+
+```
+// DELETE THIS LINE 
+import Cookies from 'js-cookie'
+
+//ADD THIS LINE
+// AWS Amplify
+import { Auth } from 'aws-amplify';
+
+// DELETE THESE LINES 
+const signOut = async () => {
+    console.log('signOut')
+    // [TODO] Authenication
+    Cookies.remove('user.logged_in')
+    //Cookies.remove('user.name')
+    //Cookies.remove('user.username')
+    //Cookies.remove('user.email')
+    //Cookies.remove('user.password')
+    //Cookies.remove('user.confirmation_code')
+    window.location.href = "/"
+  }
+
+// ADD THESE LINES 
+const signOut = async () => {
+  try {
+      await Auth.signOut({ global: true });
+      window.location.href = "/"
+  } catch (error) {
+      console.log('error signing out: ', error);
+  }
+}
+```
